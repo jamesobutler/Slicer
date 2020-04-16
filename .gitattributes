@@ -1,2 +1,6 @@
+
+.git*            export-ignore
+.hooks*          export-ignore
+
 # Declare files that will always have LF line endings on checkout.
 *.txt text eol=lf
