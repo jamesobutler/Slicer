@@ -117,9 +117,7 @@ set(SlicerBaseLogic_SRCS
   vtkSlicerFiducialsLogic.cxx
   vtkDataIOManagerLogic.cxx
   # slicer's vtk extensions (filters)
-  vtkSlicerGlyphSource2D.cxx
   vtkTransformVisualizerGlyph3D.cxx
-  vtkImageRectangularSource.cxx
   vtkSystemInformation.cxx
   vtkImageFillROI.cxx
   )
