@@ -49,6 +49,7 @@ qSlicerAboutDialog::qSlicerAboutDialog(QWidget* parentWidget)
   d->setupUi(this);
 
   qSlicerApplication* slicer = qSlicerApplication::application();
+  this->setWindowTitle("About " + slicer->applicationName());
   d->CreditsTextBrowser->setFontPointSize(25);
   d->CreditsTextBrowser->append(slicer->applicationName());
   d->CreditsTextBrowser->setFontPointSize(11);
@@ -81,6 +82,9 @@ qSlicerAboutDialog::qSlicerAboutDialog(QWidget* parentWidget)
     {
     d->CreditsTextBrowser->append(slicer->applicationVersion() + " (" + slicer->mainApplicationRepositoryRevision() + ")");
     d->CreditsTextBrowser->append("");
+    d->CreditsTextBrowser->insertHtml(slicer->applicationName() + " is a custom <a href=\"https://slicer.org/\">3D Slicer</a> application.<br />");
+    d->CreditsTextBrowser->append("");
+    d->CreditsTextBrowser->insertHtml("<b>3D Slicer acknowledgments:</b><br />");
     }
   d->CreditsTextBrowser->insertHtml(slicer->acknowledgment());
   d->CreditsTextBrowser->insertHtml(slicer->libraries());

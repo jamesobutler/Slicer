@@ -134,8 +134,8 @@ void qSlicerAppMainWindowPrivate::setupUi(QMainWindow * mainWindow)
 
   QAction* helpAboutSlicerAppAction = new QAction(mainWindow);
   helpAboutSlicerAppAction->setObjectName("HelpAboutSlicerAppAction");
-  helpAboutSlicerAppAction->setText(qSlicerAppMainWindow::tr("About 3D Slicer"));
-  helpAboutSlicerAppAction->setToolTip(qSlicerAppMainWindow::tr("Provides a description of the Slicer effort and its support."));
+  helpAboutSlicerAppAction->setText(qSlicerAppMainWindow::tr("About " + qSlicerApplication::application()->applicationName()));
+  helpAboutSlicerAppAction->setToolTip(qSlicerAppMainWindow::tr("Provides a description of the application and its support."));
 
   //----------------------------------------------------------------------------
   // Calling "setupUi()" after adding the actions above allows the call
