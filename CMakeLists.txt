@@ -624,7 +624,7 @@ endif()
   find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core QUIET)
   if(Slicer_BUILD_WEBENGINE_SUPPORT)
     list(APPEND Slicer_REQUIRED_QT_MODULES
-      WebEngine
+      WebEngine  # Qt6WebEngine_DIR-NOTFOUND
       WebEngineWidgets
       WebChannel
       )
