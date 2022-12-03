@@ -598,7 +598,7 @@ endif()
     Network OpenGL
     PrintSupport # Required by "Annotations" module
     UiTools #no dll
-    Xml XmlPatterns
+    Xml
     Svg Sql
     )
 
