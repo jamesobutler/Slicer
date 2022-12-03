@@ -4,12 +4,12 @@
 set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
 
   list(APPEND QT_LIBRARIES
-    "Qt5::Gui"
+    "Qt${QT_VERSION_MAJOR}::Gui"
     )
 
   # WebEngine Dependencies
-  if("Qt5::WebEngine" IN_LIST QT_LIBRARIES)
-    find_package(Qt5 REQUIRED
+  if("Qt${QT_VERSION_MAJOR}::WebEngine" IN_LIST QT_LIBRARIES)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED
       COMPONENTS
         Qml
         Quick
@@ -18,36 +18,36 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
         Positioning  # Soft build-time dependency. See https://bugreports.qt.io/browse/QTBUG-57418
       )
     list(APPEND QT_LIBRARIES
-      "Qt5::Qml"
-      "Qt5::Quick"
-      "Qt5::QuickWidgets"
-      "Qt5::WebEngineCore"
+      "Qt${QT_VERSION_MAJOR}::Qml"
+      "Qt${QT_VERSION_MAJOR}::Quick"
+      "Qt${QT_VERSION_MAJOR}::QuickWidgets"
+      "Qt${QT_VERSION_MAJOR}::WebEngineCore"
       )
     # QmlModels moved into its own library in Qt >= 5.14
     # Since windeployqt implicitly copies "Qt5QmlModels.dll" when
     # "-qml" is specified, exclude it on Windows.
-    if(TARGET Qt5::QmlModels AND NOT WIN32)
-      list(APPEND QT_LIBRARIES "Qt5::QmlModels")
+    if(TARGET Qt${QT_VERSION_MAJOR}::QmlModels AND NOT WIN32)
+      list(APPEND QT_LIBRARIES "Qt${QT_VERSION_MAJOR}::QmlModels")
     endif()
-    if(TARGET Qt5::Positioning)
-      list(APPEND QT_LIBRARIES "Qt5::Positioning")
+    if(TARGET Qt${QT_VERSION_MAJOR}::Positioning)
+      list(APPEND QT_LIBRARIES "Qt${QT_VERSION_MAJOR}::Positioning")
     endif()
   endif()
 
   # Get root directory
-  get_property(_filepath TARGET "Qt5::Core" PROPERTY LOCATION_RELEASE)
+  get_property(_filepath TARGET "Qt${QT_VERSION_MAJOR}::Core" PROPERTY LOCATION_RELEASE)
   get_filename_component(_dir ${_filepath} PATH)
   set(qt_root_dir "${_dir}/..")
 
   if(UNIX)
 
-    find_package(Qt5 REQUIRED COMPONENTS
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
       DBus
       X11Extras
       )
     list(APPEND QT_LIBRARIES
-      "Qt5::DBus"
-      "Qt5::X11Extras"
+      "Qt${QT_VERSION_MAJOR}::DBus"
+      "Qt${QT_VERSION_MAJOR}::X11Extras"
       )
 
     # XcbQpa
@@ -66,11 +66,11 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
 
     # Qt designer plugin
     if(Slicer_BUILD_QT_DESIGNER_PLUGINS)
-      find_package(Qt5 REQUIRED COMPONENTS
+      find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
         Designer
         )
       list(APPEND QT_LIBRARIES
-        "Qt5::Designer"
+        "Qt${QT_VERSION_MAJOR}::Designer"
         )
     endif()
 
@@ -85,7 +85,7 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
     endif()
 
     # WebEngine Dependencies
-    if("Qt5::WebEngine" IN_LIST QT_LIBRARIES)
+    if("Qt${QT_VERSION_MAJOR}::WebEngine" IN_LIST QT_LIBRARIES)
       install(PROGRAMS ${qt_root_dir}/libexec/QtWebEngineProcess
         DESTINATION ${Slicer_INSTALL_ROOT}/libexec COMPONENT Runtime
         )
@@ -99,7 +99,7 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
         COMPONENT Runtime)
     endif()
 
-    set(_qt_version "${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}")
+    set(_qt_version "${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}.${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}.${Qt${QT_VERSION_MAJOR}_VERSION_PATCH}")
 
     foreach(target ${QT_LIBRARIES})
       get_target_property(type ${target} TYPE)
@@ -129,7 +129,7 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
       )
 
     # Install webengine translations
-    if("Qt5::WebEngine" IN_LIST QT_LIBRARIES)
+    if("Qt${QT_VERSION_MAJOR}::WebEngine" IN_LIST QT_LIBRARIES)
       set(translations_dir "${qt_root_dir}/translations/qtwebengine_locales")
       install(DIRECTORY ${translations_dir}
         DESTINATION ${Slicer_INSTALL_ROOT}/share/QtTranslations/ COMPONENT Runtime
@@ -145,7 +145,7 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
 
   elseif(WIN32)
     # Get location of windeployqt.exe based on uic.exe location
-    get_target_property(uic_location Qt5::uic IMPORTED_LOCATION)
+    get_target_property(uic_location Qt${QT_VERSION_MAJOR}::uic IMPORTED_LOCATION)
     get_filename_component(_dir ${uic_location} DIRECTORY)
     set(windeployqt "${_dir}/windeployqt.exe")
     if(NOT EXISTS ${windeployqt})
@@ -158,7 +158,7 @@ set(QT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR})
       if(NOT type STREQUAL "SHARED_LIBRARY")
         continue()
       endif()
-      string(REPLACE "Qt5::" "" module ${target})
+      string(REPLACE "Qt${QT_VERSION_MAJOR}::" "" module ${target})
       string(TOLOWER ${module} module_lc)
       set(_args "${_args} -${module_lc}")
     endforeach()

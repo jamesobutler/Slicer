@@ -38,8 +38,8 @@ function(slicerFunctionAddPythonQtResources RESOURCE_NAMES)
         )
     endif()
 
-    if(NOT DEFINED QT_RCC_EXECUTABLE AND TARGET Qt5::rcc)
-      get_target_property(QT_RCC_EXECUTABLE Qt5::rcc IMPORTED_LOCATION)
+    if(NOT DEFINED QT_RCC_EXECUTABLE AND TARGET Qt${QT_VERSION_MAJOR}::rcc)
+      get_target_property(QT_RCC_EXECUTABLE Qt${QT_VERSION_MAJOR}::rcc IMPORTED_LOCATION)
     endif()
 
     # Create command to generate the compiled resource script

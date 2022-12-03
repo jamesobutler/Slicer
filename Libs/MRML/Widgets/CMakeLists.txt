@@ -45,7 +45,7 @@ endif()
 # --------------------------------------------------------------------------
 # Configure headers
 # --------------------------------------------------------------------------
-set(MRML_WIDGETS_HAVE_QT5 1)
+set(MRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR} 1)
 if(NOT DEFINED MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT)
   set(MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT 1)
 endif()
@@ -388,13 +388,13 @@ if(Slicer_USE_QtTesting)
     )
 endif()
 
-  set(_moc_options OPTIONS -DMRML_WIDGETS_HAVE_QT5)
+  set(_moc_options OPTIONS -DMRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR})
   if(MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT)
     list(APPEND _moc_options -DMRML_WIDGETS_HAVE_WEBENGINE_SUPPORT)
   endif()
-  QT5_WRAP_CPP(MRMLWidgets_MOC_CXX ${MRMLWidgets_MOC_SRCS} ${_moc_options})
-  QT5_WRAP_UI(MRMLWidgets_UI_CXX ${MRMLWidgets_UI_SRCS})
-  QT5_ADD_RESOURCES(MRMLWidgets_QRC_CXX ${MRMLWidgets_QRC_SRCS})
+  QT${QT_VERSION_MAJOR}_WRAP_CPP(MRMLWidgets_MOC_CXX ${MRMLWidgets_MOC_SRCS} ${_moc_options})
+  QT${QT_VERSION_MAJOR}_WRAP_UI(MRMLWidgets_UI_CXX ${MRMLWidgets_UI_SRCS})
+  QT${QT_VERSION_MAJOR}_ADD_RESOURCES(MRMLWidgets_QRC_CXX ${MRMLWidgets_QRC_SRCS})
 
 source_group("Resources" FILES
   ${MRMLWidgets_UI_SRCS}

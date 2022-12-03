@@ -1,6 +1,6 @@
 
-  set(Slicer_QT_VERSION_MAJOR "${Qt5_VERSION_MAJOR}")
-  set(Slicer_QT_VERSION_MINOR "${Qt5_VERSION_MINOR}")
+  set(Slicer_QT_VERSION_MAJOR "${Qt${QT_VERSION_MAJOR}_VERSION_MAJOR}")
+  set(Slicer_QT_VERSION_MINOR "${Qt${QT_VERSION_MAJOR}_VERSION_MINOR}")
 
 #-----------------------------------------------------------------------------
 # Sanity checks

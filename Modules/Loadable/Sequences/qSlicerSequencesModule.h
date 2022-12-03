@@ -24,7 +24,7 @@
 // Slicer includes
 #include "qSlicerLoadableModule.h"
 
-#include "vtkSlicerConfigure.h" // For Slicer_HAVE_QT5
+#include "vtkSlicerConfigure.h" // For Slicer_HAVE_QT${QT_VERSION_MAJOR}
 
 #include "qSlicerSequencesModuleExport.h"
 
@@ -43,7 +43,7 @@ qSlicerSequencesModule
 {
   Q_OBJECT
   QVTK_OBJECT;
-#ifdef Slicer_HAVE_QT5
+#ifdef Slicer_HAVE_QT${QT_VERSION_MAJOR}
   Q_PLUGIN_METADATA(IID "org.slicer.modules.loadable.qSlicerLoadableModule/1.0");
 #endif
   Q_INTERFACES(qSlicerLoadableModule);

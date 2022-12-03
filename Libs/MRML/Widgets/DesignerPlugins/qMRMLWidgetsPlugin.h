@@ -21,10 +21,10 @@
 #ifndef __qMRMLWidgetsPlugin_h
 #define __qMRMLWidgetsPlugin_h
 
-#include "qMRMLWidgetsConfigure.h" // For MRML_WIDGETS_HAVE_QT5, MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT
+#include "qMRMLWidgetsConfigure.h" // For MRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR}, MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT
 
 // Qt includes
-#ifdef MRML_WIDGETS_HAVE_QT5
+#ifdef MRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR}
 #include <QtUiPlugin/QDesignerCustomWidgetCollectionInterface>
 #else
 #include <QDesignerCustomWidgetCollectionInterface>
@@ -82,7 +82,7 @@ class QMRML_WIDGETS_PLUGINS_EXPORT qMRMLWidgetsPlugin
   , public QDesignerCustomWidgetCollectionInterface
 {
   Q_OBJECT
-#ifdef MRML_WIDGETS_HAVE_QT5
+#ifdef MRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR}
   Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QDesignerCustomWidgetCollectionInterface")
 #endif
   Q_INTERFACES(QDesignerCustomWidgetCollectionInterface);

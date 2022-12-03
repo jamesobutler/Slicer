@@ -155,9 +155,9 @@ set(KIT_TEST_GENERATE_MOC_SRCS
   qMRMLSceneModelTest.cxx
   qMRMLSliceControllerWidgetTest.cxx
   )
-  set(_moc_options OPTIONS -DMRML_WIDGETS_HAVE_QT5)
-  QT5_WRAP_CPP(Tests_MOC_CXX ${Tests_MOC_SRCS} ${_moc_options})
-  QT5_GENERATE_MOCS(${KIT_TEST_GENERATE_MOC_SRCS})
+  set(_moc_options OPTIONS -DMRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR})
+  QT${QT_VERSION_MAJOR}_WRAP_CPP(Tests_MOC_CXX ${Tests_MOC_SRCS} ${_moc_options})
+  QT${QT_VERSION_MAJOR}_GENERATE_MOCS(${KIT_TEST_GENERATE_MOC_SRCS})
 
 include_directories( ${CMAKE_CURRENT_BINARY_DIR})
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR})

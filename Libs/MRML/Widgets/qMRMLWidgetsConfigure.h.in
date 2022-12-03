@@ -25,7 +25,7 @@
 #cmakedefine HAVE_STDINT_H
 #endif
 
-#cmakedefine MRML_WIDGETS_HAVE_QT5
+#cmakedefine MRML_WIDGETS_HAVE_QT${QT_VERSION_MAJOR}
 #cmakedefine MRML_WIDGETS_HAVE_WEBENGINE_SUPPORT
 
 #endif
