@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/slicer-build
 
       - name: 'Upload Slicer package'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: slicer-package
           path: ${{ github.workspace }}/${{ steps.slicer-build.outputs.package }}
