@@ -26,6 +26,8 @@
 
 // Qt includes
 #include <QMouseEvent>
+#include <QPainter>
+#include <QRect>
 #include <QSettings>
 #include <QSplashScreen>
 #include <QTimer>
@@ -45,6 +47,7 @@
 #include "qSlicerCommandOptions.h"
 #include "qSlicerModuleFactoryManager.h"
 #include "qSlicerModuleManager.h"
+#include "vtkSlicerVersionConfigure.h" // For Slicer_MAIN_PROJECT_VERSION_FULL
 
 namespace
 {
@@ -183,7 +186,9 @@ int qSlicerApplicationHelper::postInitializeApplication(
   if (showSplashScreen)
   {
     QPixmap pixmap(":/SplashScreen.png");
-
+    QPainter painter(&pixmap);
+    const QRect rectangle = QRect(16, 16, pixmap.width() - (16 * 2), pixmap.height() - (16 * 2));
+    painter.drawText(rectangle, Qt::AlignRight | Qt::AlignBottom, tr("Version ") + Slicer_MAIN_PROJECT_VERSION_FULL);
     // The application launcher shows the splash screen without DPI scaling (if the screen resolution is higher
     // then the splashscreen icon appears smaller).
     // To match this behavior, we set the same device pixel ratio in the pixmap as the window's device pixel ratio.
