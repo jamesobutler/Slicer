@@ -255,7 +255,7 @@ If unchecked, the exported dataset will be added to the DICOM database.</string>
          <set>ctkPathLineEdit::Dirs|ctkPathLineEdit::Drives|ctkPathLineEdit::Executable|ctkPathLineEdit::NoDot|ctkPathLineEdit::NoDotDot|ctkPathLineEdit::PermissionMask|ctkPathLineEdit::Readable|ctkPathLineEdit::Writable</set>
         </property>
         <property name="options">
-         <set>ctkPathLineEdit::ShowDirsOnly</set>
+         <set>QFileDialog::ShowDirsOnly</set>
         </property>
         <property name="settingKey">
          <string notr="true">DICOM/ExportFolder</string>
