@@ -84,8 +84,6 @@ class DICOM(ScriptedLoadableModule):
 
         if not slicer.app.commandOptions().noMainWindow:
             slicer.util.mainWindow().findChild(qt.QAction, "LoadDICOMAction").setVisible(True)
-            # add to the main app file menu
-            self.addMenu()
             # add the settings options
             self.settingsPanel = DICOMSettingsPanel()
             slicer.app.settingsDialog().addPanel("DICOM", self.settingsPanel)
