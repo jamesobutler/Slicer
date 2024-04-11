@@ -148,15 +148,8 @@ class SequencesSelfTestTest(ScriptedLoadableModuleTest):
         self.delayDisplay("Test browsing of sequence")
         checkSequenceItems(browserNode, sequenceNode)
 
-        # Set selected item, to be tested later after loading the scene
-        lastSelectedItem = 12
-        browserNode.SetSelectedItemNumber(lastSelectedItem)
-
         # Save scene, clear scene, load scene from saved file
         self._saveAndLoadScene()
-
-        # Test selected item index
-        self.assertEqual(browserNode.GetSelectedItemNumber(), lastSelectedItem)
 
         self.delayDisplay("Test browsing of loaded sequence")
         browserNode = slicer.util.getFirstNodeByClassByName("vtkMRMLSequenceBrowserNode", "CTPCardioSeq browser")

@@ -163,7 +163,7 @@ public:
   //@}
 
   //@{
-  /// Get/Set selected item number. Item number is an integer between 0 and (NumberOfItems - 1).
+  /// Get/Set selected bundle index
   vtkGetMacro(SelectedItemNumber, int);
   vtkSetMacro(SelectedItemNumber, int);
   //@}
