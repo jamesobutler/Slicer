@@ -71,6 +71,10 @@ if(NOT DEFINED Slicer_REQUIRED_C_FLAGS OR NOT DEFINED Slicer_REQUIRED_CXX_FLAGS)
         set(tmp_cxx_flags "${tmp_cxx_flags} /MP${CMAKE_CXX_MP_NUM_PROCESSORS}")
       endif()
     endif()
+    if(MSVC_VERSION GREATER_EQUAL 1940)
+      set(tmp_c_flags "${tmp_c_flags} /D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR")  # VS 17.10: https://github.com/microsoft/STL/issues/4730
+      set(tmp_cxx_flags "${tmp_cxx_flags} /D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR")  # VS 17.10: https://github.com/microsoft/STL/issues/4730
+    endif()
   endif()
 
   set(Slicer_REQUIRED_C_FLAGS ${tmp_c_flags})
