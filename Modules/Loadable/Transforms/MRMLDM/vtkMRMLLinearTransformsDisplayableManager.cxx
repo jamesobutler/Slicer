@@ -430,12 +430,14 @@ void vtkMRMLLinearTransformsDisplayableManager::OnMRMLSceneStartClose()
 void vtkMRMLLinearTransformsDisplayableManager::OnMRMLSceneEndClose()
 {
   this->SetUpdateFromMRMLRequested(true);
+  this->RequestRender();
 }
 
 //---------------------------------------------------------------------------
 void vtkMRMLLinearTransformsDisplayableManager::OnMRMLSceneEndBatchProcess()
 {
   this->SetUpdateFromMRMLRequested(true);
+  this->RequestRender();
 }
 
 //---------------------------------------------------------------------------
@@ -543,12 +545,11 @@ bool vtkMRMLLinearTransformsDisplayableManager::ProcessInteractionEvent(vtkMRMLI
   }
 
   // Find/create active widget
-  vtkMRMLTransformHandleWidget* activeWidget = nullptr;
   double closestDistance2 = VTK_DOUBLE_MAX;
-  activeWidget = this->Internal->FindClosestWidget(eventData, closestDistance2);
+  vtkSmartPointer<vtkMRMLTransformHandleWidget> activeWidget = this->Internal->FindClosestWidget(eventData, closestDistance2);
 
   // Deactivate previous widget
-  if (this->Internal->LastActiveWidget != nullptr && this->Internal->LastActiveWidget != activeWidget)
+  if (this->Internal->LastActiveWidget != nullptr && this->Internal->LastActiveWidget != activeWidget.GetPointer())
   {
     this->Internal->LastActiveWidget->Leave(eventData);
   }
