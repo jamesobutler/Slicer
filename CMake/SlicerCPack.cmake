@@ -362,9 +362,13 @@ if(CPACK_GENERATOR STREQUAL "NSIS")
 
   set(_nsis_install_root "${Slicer_CPACK_NSIS_INSTALL_ROOT}")
 
-  # Use ManifestDPIAware to improve appearance of installer
-  string(APPEND CPACK_NSIS_DEFINES "\n  ;Use ManifestDPIAware to improve appearance of installer")
-  string(APPEND CPACK_NSIS_DEFINES "\n  ManifestDPIAware true\n")
+  if("${CMAKE_VERSION}" VERSION_GREATER_EQUAL "3.18.0")
+    set(CPACK_NSIS_MANIFEST_DPI_AWARE True)
+  elseif()
+    # Use ManifestDPIAware to improve appearance of installer
+    string(APPEND CPACK_NSIS_DEFINES "\n  ;Use ManifestDPIAware to improve appearance of installer")
+    string(APPEND CPACK_NSIS_DEFINES "\n  ManifestDPIAware true\n")
+  endif()
 
   # Use ManifestLongPathAware to support packaging of application where an install prefix like the following
   # would lead to paths having their length beyond the 260 characters limit:
@@ -409,6 +413,41 @@ if(CPACK_GENERATOR STREQUAL "NSIS")
   slicer_cpack_set("CPACK_NSIS_MUI_ICON")
   slicer_verbose_set(CPACK_NSIS_INSTALLED_ICON_NAME "${app_name}.exe")
   slicer_verbose_set(CPACK_NSIS_MUI_FINISHPAGE_RUN "../${APPLICATION_NAME}.exe")
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.20")
+    set(CPACK_NSIS_BRANDING_TEXT " ")
+  elseif()
+    string(APPEND CPACK_NSIS_DEFINES "\n  BrandingText ' '\n")
+  endif()
+  set(_installer_resources_root "${CMAKE_SOURCE_DIR}/Applications/${APPLICATION_NAME}App/Resources/Installer")
+  set(_header_bmp "${_installer_resources_root}/Header.bmp")
+  string(REPLACE "/" "\\\\" _header_bmp "${_header_bmp}")
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.17")
+    if(EXISTS ${_header_bmp})
+      slicer_verbose_set(CPACK_NSIS_MUI_HEADERIMAGE ${_header_bmp})
+    endif()
+    set(CPACK_NSIS_WELCOME_TITLE "Welcome to the ${PACKAGE_APPLICATION_NAME} Setup Wizard")
+    set(CPACK_NSIS_WELCOME_TITLE_3LINES True)
+    set(CPACK_NSIS_FINISH_TITLE "Completed the ${PACKAGE_APPLICATION_NAME} Setup Wizard")
+    set(CPACK_NSIS_FINISH_TITLE_3LINES True)
+  elseif()
+    if(EXISTS ${_header_bmp})
+      string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_HEADERIMAGE_BITMAP ${_header_bmp}\n")
+    endif()
+    string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_WELCOMEPAGE_TITLE 'Welcome to the ${PACKAGE_APPLICATION_NAME} Setup Wizard'\n")
+    string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_WELCOMEPAGE_TITLE_3LINES\n")
+    string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_FINISHPAGE_TITLE 'Completed the ${PACKAGE_APPLICATION_NAME} Setup Wizard'\n")
+    string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_FINISHPAGE_TITLE_3LINES\n")
+    endif()
+  if(EXISTS ${_header_bmp})
+    # Maintain left-align when falling back to NSIS default header image as it has a gradient designed for left-align
+    string(APPEND CPACK_NSIS_DEFINES "\n  !define MUI_HEADERIMAGE_RIGHT\n")
+  endif()
+  set(_welcome_finish_page_bmp "${_installer_resources_root}/WelcomeFinishPage.bmp")
+  string(REPLACE "/" "\\\\" _welcome_finish_page_bmp "${_welcome_finish_page_bmp}")
+  if(EXISTS ${_welcome_finish_page_bmp})
+    slicer_verbose_set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${_welcome_finish_page_bmp})
+    slicer_verbose_set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${_welcome_finish_page_bmp})
+  endif()
 
   # -------------------------------------------------------------------------
   # File extensions
