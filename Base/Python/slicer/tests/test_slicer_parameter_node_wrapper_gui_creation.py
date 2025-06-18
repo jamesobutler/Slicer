@@ -1,6 +1,6 @@
 import pathlib
 import unittest
-from typing import Annotated, Union, Optional
+from typing import Annotated, Union
 
 import ctk
 import qt
@@ -68,7 +68,7 @@ class ParameterNodeWrapperGuiCreationTest(unittest.TestCase):
         self.assertIsInstance(createGui(vtkMRMLNode), slicer.qMRMLNodeComboBox)
         self.assertIsInstance(createGui(vtkMRMLModelNode), slicer.qMRMLNodeComboBox)
         self.assertIsInstance(createGui(Union[vtkMRMLModelNode, vtkMRMLScalarVolumeNode, None]), slicer.qMRMLNodeComboBox)
-        self.assertIsInstance(createGui(Optional[vtkMRMLModelNode]), slicer.qMRMLNodeComboBox)
+        self.assertIsInstance(createGui(vtkMRMLModelNode | None), slicer.qMRMLNodeComboBox)
 
     def test_guiCreations_parameter_packs(self):
         @parameterPack

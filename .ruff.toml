@@ -126,7 +126,6 @@ extend-ignore = [
   "UP031",   # Use format specifiers instead of percent format
   "UP032",   # Use f-string instead of `format` call
   "UP038",   # non-pep604 isinstance
-  "UP045",   # non-pep604 annotation optional
 ]
 
 [lint.pydocstyle]
