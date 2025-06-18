@@ -8,6 +8,7 @@ import dataclasses
 import enum
 import logging
 import pathlib
+from itertools import pairwise
 
 import ctk
 import qt
@@ -759,7 +760,7 @@ def _extractCorrectWidgets(widget):
     ids = [[id(w) for w in ww] for ww in parentStacks]
     parentStacks, _ = zip(*sorted(zip(parentStacks, ids), key=lambda w: w[1]))
 
-    leafParentStacks = [i for i, j in zip(parentStacks[:-1], parentStacks[1:]) if not i == j[:len(i)]] \
+    leafParentStacks = [i for i, j in pairwise(parentStacks) if not i == j[:len(i)]] \
         + [parentStacks[-1]]
     return leafParentStacks
 
