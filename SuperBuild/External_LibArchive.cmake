@@ -33,7 +33,7 @@ if((NOT DEFINED LibArchive_INCLUDE_DIR
 
   ExternalProject_SetIfNotDefined(
     Slicer_${proj}_GIT_TAG
-    "14ec55f065e31fbbca23d3d96d43e07f21c6fb6d" # slicer-v3.6.1-2022-04-08-6c3301111
+    "ffde04f27231cabb91cebcbd7eca08d0f5088dc8" # slicer-v3.9.0-2025-06-20-ffde04f27
     QUIET
     )
 
@@ -97,7 +97,7 @@ if((NOT DEFINED LibArchive_INCLUDE_DIR
     )
   if(APPLE)
     ExternalProject_Add_Step(${proj} fix_rpath
-      COMMAND install_name_tool -id ${EP_INSTALL_DIR}/lib/libarchive.19.dylib ${EP_INSTALL_DIR}/lib/libarchive.19.dylib
+      COMMAND install_name_tool -id ${EP_INSTALL_DIR}/lib/libarchive.22.dylib ${EP_INSTALL_DIR}/lib/libarchive.22.dylib
       DEPENDEES install
       )
   endif()
