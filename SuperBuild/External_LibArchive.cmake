@@ -27,13 +27,13 @@ if((NOT DEFINED LibArchive_INCLUDE_DIR
 
   ExternalProject_SetIfNotDefined(
     Slicer_${proj}_GIT_REPOSITORY
-    "${EP_GIT_PROTOCOL}://github.com/Slicer/libarchive.git"
+    "${EP_GIT_PROTOCOL}://github.com/libarchive/libarchive.git"
     QUIET
     )
 
   ExternalProject_SetIfNotDefined(
     Slicer_${proj}_GIT_TAG
-    "ffde04f27231cabb91cebcbd7eca08d0f5088dc8" # slicer-v3.9.0-2025-06-20-ffde04f27
+    "v3.8.1"
     QUIET
     )
 
