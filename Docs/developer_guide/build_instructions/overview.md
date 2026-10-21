@@ -31,6 +31,57 @@ platforms before accepting any update.
 Documentation dependencies are maintained separately in `requirements-docs.txt`.
 Source-built dependencies such as VTK are not represented by these PyPI manifests.
 
+### Dependabot alerts and security updates
+
+GitHub can read the committed pip manifests, unlike requirement strings embedded
+in CMake. `.github/dependabot.yml` covers both the SuperBuild manifests and
+`requirements-docs.txt`. Routine Python version-update PRs are disabled using
+`open-pull-requests-limit: 0`; this does not disable security-update PRs.
+The monthly schedule applies to version-update checks, not advisory monitoring.
+The existing GitHub Actions update policy is independent.
+
+An administrator must enable **Dependency graph** and **Dependabot alerts** in
+the repository settings under **Security and quality / Advanced Security**.
+These settings are not enabled by committing `dependabot.yml`.
+For an alerts-first rollout, leave **Dependabot security updates** disabled
+until the alert has been verified. Check existing repository or organization
+settings before merging, since security updates may already be enabled.
+
+Verify on the `jamesobutler/Slicer` fork before repeating the rollout in
+`Slicer/Slicer`:
+
+1. Merge the infrastructure into the fork's default branch without changing
+   package versions or hashes. A feature-branch PR alone does not validate
+   default-branch alerts.
+2. Check **Insights / Dependency graph** for the core and documentation
+   manifests. In particular, confirm that `cryptography==48.0.0` appears from
+   `SuperBuild/Python/python-extension-manager-ssl-requirements.txt`.
+3. Check **Security and quality / Dependabot alerts** for
+   [GHSA-jwv3-5hgf-82ww](https://github.com/advisories/GHSA-jwv3-5hgf-82ww).
+   Its affected range is `>=42.0.0, <49.0.0`, with `49.0.0` the first patched
+   version. Allow GitHub to finish processing the default branch.
+   If the dependency or alert is absent, inspect the repository settings,
+   manifest detection, and Dependabot job logs rather than treating local
+   validation as proof that alerts work.
+4. Only after observing the alert, enable **Dependabot security updates**.
+   Inspect the resulting PR, or the update error if GitHub cannot produce one.
+   Do not merge dependency upgrades as part of the infrastructure rollout.
+5. Repeat the settings and acceptance checks upstream after integration.
+
+Security-update PRs require human review; this configuration does not enable
+automatic merging. Review compatibility among all requirement groups, including
+packages pinned in multiple manifests. Verify hashes and wheel availability for
+Slicer's Python version on every supported platform, not just the platform used
+by Dependabot. Wheel-filename comments maintained by the package updater may
+also need refreshing. Keep `--require-hashes` enabled.
+Optional core components are monitored even when disabled in a particular build.
+Documentation requirements retain their existing ranges; they are not a lock
+file for every transitive package installed by Read the Docs.
+
+See GitHub's documentation on
+[dependency graph support](https://docs.github.com/en/code-security/reference/supply-chain-security/dependency-graph-supported-package-ecosystems)
+and [configuring security updates](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-security-updates).
+
 ## Extensions for developer builds of Slicer
 
 In general, Slicer versions that a developer builds on his own computer are not expected to work with extensions in the Extensions Server.
