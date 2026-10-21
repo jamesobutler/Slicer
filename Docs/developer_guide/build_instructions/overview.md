@@ -8,6 +8,29 @@ Slicer is based on a *superbuild* architecture. This means that the in the build
 
 As Slicer is continuously developed, build instructions may change, too. Therefore, it is recommended to use build instructions that have the same version as the source code.
 
+## Bundled Python requirements
+
+PyPI packages installed by the SuperBuild are declared in
+`SuperBuild/Python/*requirements.txt`, one manifest per external project
+(for example, `python-numpy-requirements.txt`).
+These files are the source of truth for package versions and SHA-256 hashes.
+The corresponding `SuperBuild/External_python*.cmake` files copy them into the
+build directory using `configure_file(COPYONLY)` and install them with
+`pip --require-hashes`. Editing a manifest causes CMake to reconfigure; the
+existing external-project installation steps still control when packages are
+installed. System-package builds continue to use the installed system packages.
+
+Use `Utilities/Scripts/python_package_updater.py` with PythonSlicer from a current
+Slicer preview to update versions and wheel hashes. Its default search directory
+is `SuperBuild`, including the nested requirements files. Keep the paired
+`# [packagename]` and `# [/packagename]` markers used by the updater.
+Run `python_package_updater.py --validate` to check these markers.
+Review dependency compatibility and wheel availability on all supported
+platforms before accepting any update.
+
+Documentation dependencies are maintained separately in `requirements-docs.txt`.
+Source-built dependencies such as VTK are not represented by these PyPI manifests.
+
 ## Extensions for developer builds of Slicer
 
 In general, Slicer versions that a developer builds on his own computer are not expected to work with extensions in the Extensions Server.
