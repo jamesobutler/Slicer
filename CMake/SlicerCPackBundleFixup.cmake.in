@@ -176,6 +176,22 @@ if(NOT _codesign_result EQUAL 0)
   message(WARNING "Re-signing the application bundle failed:\n${_codesign_error}")
 endif()
 
+# Release signing runs after all dependency rewriting and before packaging.
+if(NOT "@Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY@" STREQUAL "")
+  message(STATUS "Signing application bundle for distribution")
+  execute_process(
+    COMMAND python3 "@CMAKE_SOURCE_DIR@/Utilities/Scripts/SlicerSignBundleMacOS.py"
+      --app "${app_dir}"
+      --identity "@Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY@"
+      --entitlements "@Slicer_CPACK_MACOS_APP_ENTITLEMENTS@"
+      --hardened-runtime ${ignore_library_args}
+    RESULT_VARIABLE _release_sign_result
+    )
+  if(NOT _release_sign_result EQUAL 0)
+    message(FATAL_ERROR "Signing the application bundle for distribution failed")
+  endif()
+endif()
+
 #-----------------------------------------------------------------------------
 # Rename the bundle to use the full application name (e.g. "3D Slicer 5.10.0")
 #-----------------------------------------------------------------------------

@@ -134,6 +134,24 @@ if(APPLE)
 endif()
 
 #-----------------------------------------------------------------------------
+# Optional macOS application release signing
+#-----------------------------------------------------------------------------
+if(APPLE)
+  set(Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY "" CACHE STRING "Developer ID Application signing identity")
+  set(Slicer_CPACK_MACOS_APP_ENTITLEMENTS "" CACHE FILEPATH "Hardened runtime entitlements for application signing")
+  mark_as_advanced(Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY Slicer_CPACK_MACOS_APP_ENTITLEMENTS)
+  mark_as_superbuild(Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY:STRING)
+  mark_as_superbuild(Slicer_CPACK_MACOS_APP_ENTITLEMENTS:FILEPATH)
+  if(Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY OR Slicer_CPACK_MACOS_APP_ENTITLEMENTS)
+    if(NOT Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY
+        OR Slicer_CPACK_MACOS_APP_SIGNING_IDENTITY STREQUAL "-"
+        OR NOT EXISTS "${Slicer_CPACK_MACOS_APP_ENTITLEMENTS}")
+      message(FATAL_ERROR "macOS app signing requires an application identity and an existing entitlements file")
+    endif()
+  endif()
+endif()
+
+#-----------------------------------------------------------------------------
 # Set libraries to leave untouched during macOS bundle fixup and re-signing
 #-----------------------------------------------------------------------------
 if(APPLE)

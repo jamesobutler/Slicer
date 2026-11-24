@@ -120,6 +120,55 @@ cd Slicer-build
 make package
 ```
 
+### Signing and notarizing a macOS release
+
+Local builds use ad-hoc app signing and need no Apple credentials. For a
+release, obtain a **Developer ID Application** identity and an appropriate
+hardened-runtime entitlements plist. Custom app maintainers must use their own
+Apple team and entitlements. In particular, verify the entitlements needed for
+dynamically loaded extensions and Python packages. Neither certificates nor
+Apple credentials belong in the source tree. See the existing
+[Slicer signing workflow](https://github.com/Slicer/Slicer/wiki/Signing-Application-Packages).
+
+Configure the superbuild with the following options, then build and package:
+
+```console
+cmake -S /path/to/source/code/of/Slicer -B /path/to/build \
+  '-DSlicer_CPACK_MACOS_APP_SIGNING_IDENTITY:STRING=Developer ID Application: Example (TEAM_ID)' \
+  -DSlicer_CPACK_MACOS_APP_ENTITLEMENTS:FILEPATH=/path/to/entitlements.plist
+cmake --build /path/to/build
+cmake --build /path/to/build/Slicer-build --target package
+```
+
+After dependency fixup, the application bundle is signed inside-out with a
+secure timestamp and hardened runtime. Release signing rejects ignored vendor
+code inside nested bundles rather than re-signing its enclosing bundle.
+Leaving both options empty preserves the normal ad-hoc signing behavior.
+
+Sign the finished package as a separate step. Use a **Developer ID Installer**
+identity for a `.pkg`, or a **Developer ID Application** identity for a `.dmg`.
+For notarization, first create a `notarytool` keychain profile:
+
+```console
+xcrun notarytool store-credentials "my-notary-profile" --apple-id "APPLE_ID" --team-id "TEAM_ID"
+```
+
+Then sign, submit, and staple the package, using a new output path:
+
+```console
+python3 /path/to/source/code/of/Slicer/Utilities/Scripts/SlicerSignPackageMacOS.py \
+  --package /path/to/unsigned-package.pkg --output /path/to/signed-package.pkg \
+  --identity "Developer ID Installer: Example (TEAM_ID)" --notary-profile my-notary-profile
+```
+
+For a DMG, use `.dmg` paths and the Developer ID Application identity instead.
+Omit `--notary-profile` to sign without notarizing. The script publishes the
+new file only after all requested steps succeed and never overwrites the input.
+Before release, verify the signature, stapled ticket, Gatekeeper assessment,
+and application behavior on a clean supported macOS machine. Adding files such
+as Python packages inside the app after installation can invalidate its bundle
+signature.
+
 ### Debugging the build process
 
 When using the `-j` option, the build will continue past the source of the first error. If the build fails and you don't see what failed, rebuild without the `-j` option. Or, to speed up this process build first with the `-j` and `-k` options and then run plain make. The `-k` option will make the build keep going so that any code that can be compiled independent of the error will be completed and the second make will reach the error condition more efficiently. To debug the error you can pipe the output of the make command to an external log file like this:
